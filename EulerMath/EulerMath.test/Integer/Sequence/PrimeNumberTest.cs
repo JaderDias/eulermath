@@ -1,0 +1,138 @@
+﻿using EulerMath.Integer.Sequence;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Diagnostics;
+
+namespace EulerMath.test
+{
+    
+    
+    /// <summary>
+    ///This is a test class for PrimeTest and is intended
+    ///to contain all PrimeTest Unit Tests
+    ///</summary>
+    [TestClass()]
+    public class PrimeNumberTest
+    {
+
+
+        private TestContext testContextInstance;
+
+        /// <summary>
+        ///Gets or sets the test context which provides
+        ///information about and functionality for the current test run.
+        ///</summary>
+        public TestContext TestContext
+        {
+            get
+            {
+                return testContextInstance;
+            }
+            set
+            {
+                testContextInstance = value;
+            }
+        }
+
+        #region Additional test attributes
+        // 
+        //You can use the following additional attributes as you write your tests:
+        //
+        //Use ClassInitialize to run code before running the first test in the class
+        //[ClassInitialize()]
+        //public static void MyClassInitialize(TestContext testContext)
+        //{
+        //}
+        //
+        //Use ClassCleanup to run code after all tests in a class have run
+        //[ClassCleanup()]
+        //public static void MyClassCleanup()
+        //{
+        //}
+        //
+        //Use TestInitialize to run code before running each test
+        //[TestInitialize()]
+        //public void MyTestInitialize()
+        //{
+        //}
+        //
+        //Use TestCleanup to run code after each test has run
+        //[TestCleanup()]
+        //public void MyTestCleanup()
+        //{
+        //}
+        //
+        #endregion
+
+
+        /// <summary>
+        ///A test for Prime Constructor
+        ///</summary>
+        [TestMethod()]
+        public void PrimeConstructorTest()
+        {
+            var target = new PrimeNumber();
+        }
+
+        //http://www.research.att.com/~njas/sequences/A000040
+        int[] expected = new int[] { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271 };
+
+        /// <summary>
+        ///A test for Next
+        ///</summary>
+        [TestMethod()]
+        public void NextTest()
+        {
+            var target = new PrimeNumber();
+            for (var i = 0; i < expected.Length; i++)
+            {
+                Assert.AreEqual(expected[i], target.Next());
+            }
+        }
+
+        /// <summary>
+        ///A test for Calc
+        ///</summary>
+        [TestMethod()]
+        public void CalcTest()
+        {
+            var target = new PrimeNumber();
+            var actual = new List<int>();
+            for (var i = 0; i < expected.Length; i++)
+            {
+                Assert.AreEqual(expected[i], target.Calc(i));
+            }
+        }
+
+        /// <summary>
+        ///A performance test for Calc
+        ///</summary>
+        [TestMethod()]
+        public void CalcPerformanceTest()
+        {
+            var operationsPerSecond = 1e4;
+            var target = new PrimeNumber();
+            var sw = Stopwatch.StartNew();
+            for (var i = 0; i < operationsPerSecond; i++)
+            {
+                target.Calc(i);
+            }
+            sw.Stop();
+        }
+
+        /// <summary>
+        ///A performance test for NextInt32
+        ///</summary>
+        public void NextInt32PerformanceTest()
+        {
+            var operationsPerSecond = 4e7;
+            var target = new PrimeNumber();
+            var sw = Stopwatch.StartNew();
+            for (var i = 0; i < operationsPerSecond; i++)
+            {
+                target.Next();
+            }
+            sw.Stop();
+        }
+    }
+}
