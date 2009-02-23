@@ -105,9 +105,46 @@ namespace EulerMath.test
         }
 
         /// <summary>
-        ///A performance test for Calc
+        ///A test for GetLowestFactor
         ///</summary>
         [TestMethod()]
+        public void GetLowestFactor()
+        {
+            var expected = new long[] { 13, 17, 17 };
+            var number = 1L;
+            foreach (var prime in expected)
+            {
+                number *= prime;
+            }
+            var target = new PrimeNumber();
+            var actual = target.GetLowestFactor(number);
+            Assert.AreEqual(expected[0], actual);
+        }
+
+        /// <summary>
+        ///A test for Factorize
+        ///</summary>
+        [TestMethod()]
+        public void FactorizeTest()
+        {
+            var expected = new long[] { 2, 5, 7, 7, 13, 17, 17 };
+            var target = new PrimeNumber();
+            var number = 1L;
+            foreach(var prime in expected)
+            {
+                number *= prime;
+            }
+            var actual = target.Factorize(number);
+            Assert.AreEqual(expected.Length, actual.Count);
+            for (var index = 0; index < expected.Length; index++)
+            {
+                Assert.AreEqual(expected[index], actual[index]);
+            }
+        }
+
+        /// <summary>
+        ///A performance test for Calc
+        ///</summary>
         public void CalcPerformanceTest()
         {
             var operationsPerSecond = 1e4;

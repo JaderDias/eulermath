@@ -52,11 +52,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="$(ProgramFiles)\MSBuild\Microsoft\StyleCop\v4.3\Microsoft.StyleCop.targets" />  
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' ">
+    <PostBuildEvent>"%25ProgramFiles%25\Microsoft FxCop\FxCopCmd.exe" /file:"$(TargetPath)" /console /searchgac</PostBuildEvent>
+  </PropertyGroup>
 </Project>
