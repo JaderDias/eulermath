@@ -20,7 +20,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with EulerMath.  If not, see <http://www.gnu.org/licenses/>.
 
-using EulerMath.Integers;
+using EulerMath;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Diagnostics;
