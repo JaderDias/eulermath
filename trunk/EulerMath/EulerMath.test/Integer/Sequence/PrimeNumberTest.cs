@@ -1,4 +1,26 @@
-﻿using EulerMath.Integer.Sequence;
+﻿// <copyright file="PrimeNumberTest.cs" company="Company">
+// Copyright (c) Jader Dias. All rights reserved.
+// </copyright>
+// <author>Jader Dias</author>
+// <email>jaderd@gmail.com</email>
+// <date>2009-02-23</date>
+
+// This file is part of EulerMath.
+//
+// EulerMath is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// EulerMath is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with EulerMath.  If not, see <http://www.gnu.org/licenses/>.
+
+using EulerMath.Integers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -86,7 +108,7 @@ namespace EulerMath.test
             var target = new PrimeNumber();
             for (var i = 0; i < expected.Length; i++)
             {
-                Assert.AreEqual(expected[i], target.Next());
+                Assert.AreEqual(expected[i], target.NextNumber());
             }
         }
 
@@ -167,7 +189,7 @@ namespace EulerMath.test
             var sw = Stopwatch.StartNew();
             for (var i = 0; i < operationsPerSecond; i++)
             {
-                target.Next();
+                target.NextNumber();
             }
             sw.Stop();
         }
