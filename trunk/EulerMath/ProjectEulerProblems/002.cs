@@ -21,7 +21,7 @@
 // along with EulerMath.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Diagnostics;
-using EulerMath.Integers;
+using EulerMath;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace ProjectEulerProblems
 {
