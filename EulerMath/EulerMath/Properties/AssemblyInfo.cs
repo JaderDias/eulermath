@@ -1,6 +1,30 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿// <copyright file="AssemblyInfo.cs" company="Company">
+// Copyright (c) Jader Dias. All rights reserved.
+// </copyright>
+// <author>Jader Dias</author>
+// <email>jaderd@gmail.com</email>
+// <date>2009-02-23</date>
+
+// This file is part of EulerMath.
+//
+// EulerMath is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// EulerMath is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with EulerMath.  If not, see <http://www.gnu.org/licenses/>.
+
+using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
+
+[assembly: CLSCompliant(true)]
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -8,9 +32,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("EulerMath")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("asdfghjk")]
+[assembly: AssemblyCompany("Jader Dias")]
 [assembly: AssemblyProduct("EulerMath")]
-[assembly: AssemblyCopyright("Copyright © asdfghjk 2009")]
+[assembly: AssemblyCopyright("Copyright © Jader Dias 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
