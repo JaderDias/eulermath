@@ -27,22 +27,42 @@ using System.Collections.Generic;
 using System;
 namespace ProjectEulerProblems
 {
-    public class Ambiguosity
-    {
-        public static bool IsAmbiguous(double number, double denominatorBound)
-        {
-            return false;
-        }
-    }
-
-    [TestClass()]
+    /// <summary>
+    /// Currently too slow = 183 years
+    /// </summary>
+//[TestClass()]
     public class AHundredAndNinetyEight
     {
-        [TestMethod()]
-        public void AmbiguosityTest()
+        public long CountNotZero(double maxValue, long maxDenominator)
         {
-            var expected = true;
-            var actual = Ambiguosity.IsAmbiguous(9d/40d, 6);
+            var count = 0L;
+            for (var denominator = 2L; denominator <= maxDenominator; denominator++)
+            {
+                count += ((long)(Math.Ceiling(((double)denominator) * maxValue))) - 1;
+            }
+            return count;
+        }
+
+        public long Count(double maxValue, long maxDenominator)
+        {
+            var count = 0L;
+            for (var denominator = 2L; denominator <= maxDenominator; denominator++)
+            {
+                var maxNumerator = (long)Math.Ceiling(((double)denominator) * maxValue);
+                for (var numerator = 1L; numerator < maxNumerator; numerator++)
+                {
+                    if (Rational.FromFraction(numerator, denominator).IsAmbiguous())
+                        count++;
+                }
+            }
+            return count;
+        }
+
+        [TestMethod()]
+        public void CountTest()
+        {
+            var expected = 1f;
+            var actual = Count(.1d, 11);
             Assert.AreEqual(expected, actual);
         }
 
@@ -50,26 +70,14 @@ namespace ProjectEulerProblems
         /// How many ambiguous numbers x = p/q, 0 < x < 1/100, are there whose denominator q does not exceed 10^(8)?
         ///</summary>
         [TestMethod()]
-        public void TwoHundredAndThirtyTest()
+        public void AHundredAndNinetyEightTest()
         {
-            var expected = "850481152593119296";
-            string actual = "";
-            var target = new FibonacciString(
-                 "1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679"
-                , "8214808651328230664709384460955058223172535940812848111745028410270193852110555964462294895493038196"
-            );
-            var ds = new List<long>();
-            for (long n = 0; n <= 17; n++)
-            {
-                long d = (127 + 19 * n) * (long)Math.Pow(7, n);
-                ds.Add(d);
-            }
-            foreach (var d in ds)
-            {
-                var operand = target.D(d);
-                actual = operand + actual;
-            }
-            Assert.AreEqual(expected, actual);
+            var sw = Stopwatch.StartNew();
+            var actual = Count(.1d, (long)1e4);
+            sw.Stop();
         }
+        //1e3 {00:00:00.3477140}
+        //1e4 {00:00:38.5011444}
+        //1e8 183 years
     }
 }

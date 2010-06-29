@@ -23,9 +23,11 @@
 using System.Diagnostics;
 using EulerMath;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace ProjectEulerProblems
 {
-    [TestClass()]
+// Uses FibonacciNumber class from EulerMath
+//    [TestClass()]
     public class Two
     {
         public long GetEven(long limit)

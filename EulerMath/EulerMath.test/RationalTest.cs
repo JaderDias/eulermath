@@ -70,7 +70,7 @@ namespace EulerMath.test
         public void NumeratorTest()
         {
             long expected = 9;
-            Rational target = new Rational(expected, 1);
+            Rational target = Rational.FromFraction(expected, 1);
             long actual;
             actual = target.Numerator;
             Assert.AreEqual(expected, actual);
@@ -83,10 +83,51 @@ namespace EulerMath.test
         public void DenominatorTest()
         {
             long expected = 9;
-            Rational target = new Rational(1, expected);
+            Rational target = Rational.FromFraction(1, expected);
             long actual;
             actual = target.Denominator;
             Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        ///A test for FromFloatingPointValue
+        ///</summary>
+        [TestMethod()]
+        public void FromFloatingPointValueTest()
+        {
+            var expectedNumerator = 9L;
+            var expectedDenominator = 40L;
+            var factor = 2d;
+            var number = ((double)expectedNumerator * factor) / ((double)expectedDenominator * factor);
+            Rational actual = Rational.FromFloatingPointValue(number);
+            Assert.AreEqual(expectedNumerator, actual.Numerator);
+            Assert.AreEqual(expectedDenominator, actual.Denominator);
+            expectedNumerator = 1234567890123456L;
+            expectedDenominator = 1L;
+            number = ((double)expectedNumerator * factor) / ((double)expectedDenominator * factor);
+            actual = Rational.FromFloatingPointValue(number);
+            Assert.AreEqual(expectedNumerator, actual.Numerator);
+            Assert.AreEqual(expectedDenominator, actual.Denominator);
+            expectedNumerator = 1L;
+            expectedDenominator = 1L << 9; //if 10 crashes
+            number = ((double)expectedNumerator * factor) / ((double)expectedDenominator * factor);
+            actual = Rational.FromFloatingPointValue(number);
+            Assert.AreEqual(expectedNumerator, actual.Numerator);
+            Assert.AreEqual(expectedDenominator, actual.Denominator);
+        }
+
+        /// <summary>
+        ///A test for FromFraction
+        ///</summary>
+        [TestMethod()]
+        public void FromFractionTest()
+        {
+            long numerator = 9;
+            long denominator = 40;
+            var factor = 2L;
+            Rational target = Rational.FromFraction(numerator * factor, denominator * factor);
+            Assert.AreEqual(numerator, target.Numerator);
+            Assert.AreEqual(denominator, target.Denominator);
         }
 
         /// <summary>
@@ -100,53 +141,12 @@ namespace EulerMath.test
             var numerator = 9L;
             var denominator = 40L;
             double expected = 1d / denominator;
-            Rational target = new Rational(numerator, denominator);
+            Rational target = Rational.FromFraction(numerator, denominator);
             long maxDenominator = 5;
             var actual = target.Simplify(maxDenominator);
             Assert.IsTrue(Rational.AreRelativelyApproximatelyEqual(expected, actual));
             Assert.AreEqual(expectedNumerator, target.Numerator);
             Assert.AreEqual(expectedDenominator, target.Denominator);
-        }
-
-        /// <summary>
-        ///A test for Create From
-        ///</summary>
-        [TestMethod()]
-        public void CreateFromTest()
-        {
-            var expectedNumerator = 9L;
-            var expectedDenominator = 40L;
-            var factor = 2d;
-            var number = ((double)expectedNumerator * factor) / ((double)expectedDenominator * factor);
-            Rational actual = Rational.CreateFrom(number);
-            Assert.AreEqual(expectedNumerator, actual.Numerator);
-            Assert.AreEqual(expectedDenominator, actual.Denominator);
-            expectedNumerator = 1234567890123456L;
-            expectedDenominator = 1L;
-            number = ((double)expectedNumerator * factor) / ((double)expectedDenominator * factor);
-            actual = Rational.CreateFrom(number);
-            Assert.AreEqual(expectedNumerator, actual.Numerator);
-            Assert.AreEqual(expectedDenominator, actual.Denominator);
-            expectedNumerator = 1L;
-            expectedDenominator = 1L << 9; //if 10 crashes
-            number = ((double)expectedNumerator * factor) / ((double)expectedDenominator * factor);
-            actual = Rational.CreateFrom(number);
-            Assert.AreEqual(expectedNumerator, actual.Numerator);
-            Assert.AreEqual(expectedDenominator, actual.Denominator);
-        }
-
-        /// <summary>
-        ///A test for Rational Constructor
-        ///</summary>
-        [TestMethod()]
-        public void RationalConstructorTest()
-        {
-            long numerator = 9;
-            long denominator = 40;
-            var factor = 2L;
-            Rational target = new Rational(numerator * factor, denominator * factor);
-            Assert.AreEqual(numerator, target.Numerator);
-            Assert.AreEqual(denominator, target.Denominator);
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace EulerMath.test
             {
                 long numerator = 9L;
                 long denominator = 40L;
-                Rational target = new Rational(numerator, denominator);
+                Rational target = Rational.FromFraction(numerator, denominator);
                 long maxDenominator = 5L;
                 long avoidedDenominator = 4L;
                 double expectedNumerator = 1L;
@@ -173,7 +173,7 @@ namespace EulerMath.test
             {
                 long numerator = 1L;
                 long denominator = 2L;
-                Rational target = new Rational(numerator, denominator);
+                Rational target = Rational.FromFraction(numerator, denominator);
                 long maxDenominator = 1L;
                 long avoidedDenominator = 1L;
                 double expectedNumerator = 1L;
@@ -188,7 +188,7 @@ namespace EulerMath.test
             {
                 long numerator = 1L;
                 long denominator = 2L;
-                Rational target = new Rational(numerator, denominator);
+                Rational target = Rational.FromFraction(numerator, denominator);
                 long maxDenominator = 2L;
                 long avoidedDenominator = 1L;
                 double expectedNumerator = 1L;
@@ -210,16 +210,22 @@ namespace EulerMath.test
         {
             long numerator = 9L;
             long denominator = 40L;
-            Rational target = new Rational(numerator, denominator);
-            long maxDenominator = 6L;
+            Rational target = Rational.FromFraction(numerator, denominator);
             bool expected = true;
             bool actual;
-            actual = target.IsAmbiguous(maxDenominator);
+            actual = target.IsAmbiguous();
             Assert.AreEqual(expected, actual);
-            target = new Rational(numerator, denominator);
-            maxDenominator = 4L;
+            numerator = 9L;
+            denominator = 31L;
+            target = Rational.FromFraction(numerator, denominator);
             expected = false;
-            actual = target.IsAmbiguous(maxDenominator);
+            actual = target.IsAmbiguous();
+            Assert.AreEqual(expected, actual);
+            numerator = 4L;
+            denominator = 2L;
+            target = Rational.FromFraction(numerator, denominator);
+            expected = false;
+            actual = target.IsAmbiguous();
             Assert.AreEqual(expected, actual);
         }
 
@@ -243,13 +249,22 @@ namespace EulerMath.test
         [TestMethod()]
         public void AreAbsolutelyApproximatelyEqualTest()
         {
-            double a = 0d;
-            double b = double.Epsilon;
-            bool expected = false; // TODO: Initialize to an appropriate value
-            bool actual;
-            actual = Rational.AreAbsolutelyApproximatelyEqual(a, b);
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            {
+                double a = 0d;
+                double b = a + double.Epsilon;
+                bool expected = true;
+                bool actual;
+                actual = Rational.AreAbsolutelyApproximatelyEqual(a, b);
+                Assert.AreEqual(expected, actual);
+            }
+            {
+                double a = 0d;
+                double b = a + 10e-14;
+                bool expected = false;
+                bool actual;
+                actual = Rational.AreAbsolutelyApproximatelyEqual(a, b);
+                Assert.AreEqual(expected, actual);
+            }
         }
     }
 }

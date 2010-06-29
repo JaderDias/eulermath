@@ -20,38 +20,46 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with EulerMath.  If not, see <http://www.gnu.org/licenses/>.
 
-using System.Diagnostics;
-using EulerMath;
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Oyster.Math;
+using EulerMath;
 
 namespace ProjectEulerProblems
 {
-//  Uses prime numbers from EulerMath
-//    [TestClass()]
-    public class Three
+    //Slow: about 2 minutes
+    //[TestClass()]
+    public class Ten
     {
-        [TestMethod()]
-        public void LargestFactorTest()
+        public long SumAllPrimesBelow(long boundary)
         {
-            var expected = 29;
-            var target = new PrimeNumber();
-            var actual = target.Factorize(13195);
-            Assert.AreEqual(expected, actual[actual.Count - 1]);
+            var primes = new PrimeNumber();
+            var prime = 0L;
+            var sum = 0L;
+            while ((prime = primes.NextNumber()) < boundary)
+            {
+                sum += prime;
+            }
+            return sum;
+        }
+
+        [TestMethod()]
+        public void SumAllPrimesBelowTenTest()
+        {
+            var expected = 17;
+            var actual = SumAllPrimesBelow(10L);
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
-        /// What is the largest prime factor of the number 600851475143 ?
+        /// Find the sum of all the primes below two million.
         ///</summary>
         [TestMethod()]
-        public void ThreeTest()
+        public void TenTest()
         {
-            long expected = 6857;
-            var sw = Stopwatch.StartNew();
-            var target = new PrimeNumber();
-            var actual = target.Factorize(600851475143);
-            sw.Stop();
-            Assert.AreEqual(expected, actual[actual.Count - 1]);
-            Assert.IsTrue(sw.ElapsedMilliseconds < 10);
+            var expected = 142913828922;
+            var actual = SumAllPrimesBelow(Convert.ToInt64(2e6));
+            Assert.AreEqual(expected, actual);
         }
     }
 }

@@ -99,7 +99,7 @@ namespace ProjectEulerProblems
         }
     }
     
-    [TestClass()]
+//    [TestClass()]
     public class TwoHundredAndThirty
     {
         [TestMethod()]

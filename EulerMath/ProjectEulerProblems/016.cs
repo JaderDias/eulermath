@@ -20,38 +20,46 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with EulerMath.  If not, see <http://www.gnu.org/licenses/>.
 
-using System.Diagnostics;
-using EulerMath;
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Oyster.Math;
 
 namespace ProjectEulerProblems
 {
-//  Uses prime numbers from EulerMath
-//    [TestClass()]
-    public class Three
+    //Solution With the help of a bigint library
+    //[TestClass()]
+    public class Sixteen
     {
-        [TestMethod()]
-        public void LargestFactorTest()
+        public long DigitsSum(string integer)
         {
-            var expected = 29;
-            var target = new PrimeNumber();
-            var actual = target.Factorize(13195);
-            Assert.AreEqual(expected, actual[actual.Count - 1]);
+            var sum = 0L;
+            foreach (var digit in integer)
+            {
+                sum += Convert.ToInt64(digit.ToString());
+            }
+            return sum;
+        }
+
+        [TestMethod()]
+        public void DigitsSumTest()
+        {
+            var expected = 26;
+            var target = Math.Pow(2, 15);
+            var actual = DigitsSum(target.ToString());
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
-        /// What is the largest prime factor of the number 600851475143 ?
+        /// What is the sum of the digits of the number 2^(1000)?
         ///</summary>
         [TestMethod()]
-        public void ThreeTest()
+        public void SixteenTest()
         {
-            long expected = 6857;
-            var sw = Stopwatch.StartNew();
-            var target = new PrimeNumber();
-            var actual = target.Factorize(600851475143);
-            sw.Stop();
-            Assert.AreEqual(expected, actual[actual.Count - 1]);
-            Assert.IsTrue(sw.ElapsedMilliseconds < 10);
+            long expected = 1366;
+            var target = new IntX(2);
+            target <<= (int)1e3 - 1;
+            var actual = DigitsSum(target.ToString());
+            Assert.AreEqual(expected, actual);
         }
     }
 }
