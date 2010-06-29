@@ -24,7 +24,8 @@ using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace ProjectEulerProblems
 {
-    [TestClass()]
+//  Standalone solution
+//    [TestClass()]
     public class One
     {
         public long SumUpToExcept3and5Multiples(long max)

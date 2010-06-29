@@ -56,22 +56,46 @@ namespace EulerMath
         /// <param name="numerator">The numerator.</param>
         /// <param name="denominator">The denominator.</param>
         /// <param name="floatingPointValue">The floating point value.</param>
-        public Rational(long numerator, long denominator, double floatingPointValue)
+        private Rational(long numerator, long denominator, double floatingPointValue)
         {
             this.Numerator = numerator;
             this.Denominator = denominator;
-            this.FPValue = floatingPointValue;
-            this.Simplify();
+            this.FloatingPointValue = floatingPointValue;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Rational"/> class.
+        /// Creates a new instance of the <see cref="Rational"/> class.
         /// </summary>
         /// <param name="numerator">The numerator.</param>
         /// <param name="denominator">The denominator.</param>
-        public Rational(long numerator, long denominator)
-            : this(numerator, denominator, ((double)numerator) / ((double)denominator))
+        public static Rational FromFraction(long numerator, long denominator)
         {
+            var fraction = new Rational(numerator, denominator, ((double)numerator) / ((double)denominator));
+            fraction.Simplify();
+            return fraction;
+        }
+
+        /// <summary>
+        /// Creates a rational number from his floating point value. 
+        /// </summary>
+        /// <param name="number">The floating point value.</param>
+        /// <returns>The rational number</returns>
+        public static Rational FromFloatingPointValue(double number)
+        {
+            if (number >= MantissaSizeOrder)
+            {
+                var fraction = new Rational((long)number, 1L, number);
+                fraction.Simplify();
+                return fraction;
+            }
+            else
+            {
+                var denominator = MantissaSizeOrder * Math.Pow(10, -1 * Math.Floor(Math.Log10(number)));
+                var numerator = (long)(number * denominator);
+                var fraction = new Rational(numerator, (long)denominator, number);
+                fraction.Simplify();
+                return fraction;
+            }
         }
 
         /// <summary>
@@ -90,26 +114,7 @@ namespace EulerMath
         /// Gets the floating point value.
         /// </summary>
         /// <value>The floating point value.</value>
-        public double FPValue { get; private set; }
-
-        /// <summary>
-        /// Creates a rational number from his floating point value. 
-        /// </summary>
-        /// <param name="number">The floating point value.</param>
-        /// <returns>The rational number</returns>
-        public static Rational CreateFrom(double number)
-        {
-            if (number >= MantissaSizeOrder)
-            {
-                return new Rational((long)number, 1L);
-            }
-            else
-            {
-                var denominator = MantissaSizeOrder * Math.Pow(10, -1 * Math.Floor(Math.Log10(number)));
-                var numerator = (long)(number * denominator);
-                return new Rational(numerator, (long)denominator);
-            }
-        }
+        public double FloatingPointValue { get; private set; }
 
         /// <summary>
         /// Verifies if two doubles are relatively approximately equal.
@@ -178,10 +183,11 @@ namespace EulerMath
             }
             else
             {
-                var lowestDifference = this.FPValue + 1d;
+                var lowestDifference = double.PositiveInfinity;
+                var startValue = this.FloatingPointValue;
                 for (var denominator = 1d; denominator <= maxDenominator; denominator++)
                 {
-                    var numerator = this.FPValue * denominator;
+                    var numerator = startValue * denominator;
                     var doubleNumerator = numerator * 2;
                     if (denominator == avoidedDenominator)
                     {
@@ -200,11 +206,12 @@ namespace EulerMath
                     }
 
                     var floatingPoingValue = numerator / denominator;
-                    var difference = Math.Abs(floatingPoingValue - this.FPValue);
+                    var difference = Math.Abs(floatingPoingValue - startValue);
                     if (difference < lowestDifference)
                     {
                         this.Numerator = (long)numerator;
                         this.Denominator = (long)denominator;
+                        this.FloatingPointValue = floatingPoingValue;
                         lowestDifference = difference;
                     }
                 }
@@ -226,17 +233,12 @@ namespace EulerMath
         /// <summary>
         /// Determines whether this rational number is ambiguous.
         /// </summary>
-        /// <param name="maxDenominator">The max denominator.</param>
         /// <returns>
         ///     <c>true</c> if the this rational number is ambiguous; otherwise, <c>false</c>.
         /// </returns>
-        public bool IsAmbiguous(long maxDenominator)
+        public bool IsAmbiguous()
         {
-            var simplifiedRational1 = new Rational(this.Numerator, this.Denominator);
-            var simplifiedRational2 = new Rational(this.Numerator, this.Denominator);
-            var difference1 = simplifiedRational1.Simplify(maxDenominator);
-            var difference2 = simplifiedRational2.Simplify(maxDenominator, simplifiedRational1.Denominator);
-            return difference1 == difference2;
+            return (this.Denominator % 2) == 0;
         }
     }
 }
